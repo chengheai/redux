@@ -1,18 +1,17 @@
-export default function createStore(initState) {
+/*增加一个参数 reducer*/
+export default function (reducer, initState) {
   let state = initState;
   let listeners = [];
 
-  /*订阅*/
   function subscribe(listener) {
     listeners.push(listener);
   }
 
-  function changeState(newState) {
-    state = newState;
-    /*通知*/
+  function dispatch(action) {
+    /*请按照我的计划修改 state*/
+    state = reducer(state, action);
     for (let i = 0; i < listeners.length; i++) {
       const listener = listeners[i];
-      console.log('listener: ', listener);
       listener();
     }
   }
@@ -23,7 +22,7 @@ export default function createStore(initState) {
 
   return {
     subscribe,
-    changeState,
+    dispatch,
     getState
   }
 }
